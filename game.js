@@ -119,7 +119,7 @@ imageSRCs[16] = 'Graphics/Structure/endPieceTop.gif';
 imageSRCs[17] = 'Graphics/Structure/endPieceBottom.gif';
 imageSRCs[18] = 'Graphics/Structure/independent.gif';
 
-var myImagesArray = 'getReady.gif,loading.gif,startUp.gif,congratulations.gif,easyImg.gif,mediumImg.gif,hardImg.gif,coverPiece.gif,coverPiece2.gif,keys0.gif,keys1.gif,keys2.gif,startButton1.gif,startButton2.gif,Graphics/Player/player1left.gif,Graphics/Player/player2left.gif,Graphics/Player/player3left.gif,Graphics/Player/player4left.gif,Graphics/Player/player5left.gif,Graphics/Player/player1right.gif,Graphics/Player/player2right.gif,Graphics/Player/player3right.gif,Graphics/Player/player4right.gif,Graphics/Player/player5right.gif,' + imageSRCs.join(',') + ',Graphics/Enemy/enemy1left.gif,Graphics/Enemy/enemy2left.gif,Graphics/Enemy/enemy3left.gif,Graphics/Enemy/enemyRunLeft.gif,Graphics/Enemy/enemy1right.gif,Graphics/Enemy/enemy2right.gif,Graphics/Enemy/enemy3right.gif,Graphics/Enemy/enemyCaptured1.gif,Graphics/Enemy/enemyCaptured2.gif,Graphics/Dots/smallDot.gif,Graphics/Dots/bigDot.gif,Graphics/Scores/100.gif,Graphics/Scores/200.gif,Graphics/Scores/400.gif,Graphics/Scores/800.gif,Graphics/Scores/1600.gif,Graphics/Scores/3200.gif,Graphics/blank.gif';
+var myImagesArray = 'getReady.gif,loading.gif,startUp.gif,congratulations.gif,easyImg.gif,mediumImg.gif,hardImg.gif,coverPiece.gif,coverPiece2.gif,keys0img.gif,keys1img.gif,keys2img.gif,startButton1.gif,startButton2.gif,Graphics/Player/player1left.gif,Graphics/Player/player2left.gif,Graphics/Player/player3left.gif,Graphics/Player/player4left.gif,Graphics/Player/player5left.gif,Graphics/Player/player1right.gif,Graphics/Player/player2right.gif,Graphics/Player/player3right.gif,Graphics/Player/player4right.gif,Graphics/Player/player5right.gif,' + imageSRCs.join(',') + ',Graphics/Enemy/enemy1left.gif,Graphics/Enemy/enemy2left.gif,Graphics/Enemy/enemy3left.gif,Graphics/Enemy/enemyRunLeft.gif,Graphics/Enemy/enemy1right.gif,Graphics/Enemy/enemy2right.gif,Graphics/Enemy/enemy3right.gif,Graphics/Enemy/enemyCaptured1.gif,Graphics/Enemy/enemyCaptured2.gif,Graphics/Dots/smallDot.gif,Graphics/Dots/bigDot.gif,Graphics/Scores/100.gif,Graphics/Scores/200.gif,Graphics/Scores/400.gif,Graphics/Scores/800.gif,Graphics/Scores/1600.gif,Graphics/Scores/3200.gif,Graphics/blank.gif';
 myImagesArray = myImagesArray.split(',');
 
 for (var n = 0; n < myImagesArray.length; n++) {
@@ -609,8 +609,8 @@ function setUpLevel(levelNum) {
   if (levelNum == 0) monitorRunning = true;
 }
 
-gameStarted = false;
-gameFinished = false;
+var gameStarted = false;
+var gameFinished = false;
 
 document.onkeydown = keyDown;
 document.onkeyup = keyUp;
