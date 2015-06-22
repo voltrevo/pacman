@@ -830,7 +830,7 @@ function resetGame() {
   levelEdit(1);
 
   var fig1 = titleBar.innerHTML.split('SCORE: ');
-  var fig2 = fig1[1].split('</CENTER>');
+  var fig2 = fig1[1].split('</center>');
 
   fig2[0] = 0;
   var fig2 = fig2.join('');
@@ -838,7 +838,7 @@ function resetGame() {
   titleBar.innerHTML = fig1[0] + 'SCORE: ' + fig2;
 
   var fig1 = titleBar.innerHTML.split('LIVES: ');
-  var fig2 = fig1[1].split('</CENTER>');
+  var fig2 = fig1[1].split('</center>');
   fig2[0] = 1;
   var fig3 = fig2[0];
   var fig2 = fig2.join('');
@@ -846,7 +846,7 @@ function resetGame() {
   titleBar.innerHTML = fig1[0] + 'LIVES: ' + fig2;
 
   var fig1 = titleBar.innerHTML.split('PICK-UPS LEFT: ');
-  var fig2 = fig1[1].split('</CENTER>');
+  var fig2 = fig1[1].split('</center>');
   fig2[0] = 0;
   var fig3 = fig2[0];
   var fig2 = fig2.join('');
@@ -1177,10 +1177,10 @@ function replace(string, ridOf, replaceWith) {
 
 function levelEdit(num) {
   var fig1 = titleBar.innerHTML.split('LEVEL: ');
-  var fig2 = fig1[1].split('</CENTER>');
+  var fig2 = fig1[1].split('</center>');
 
   fig2[0] = num;
-  var fig2 = fig2.join('');
+  fig2 = fig2.join('');
 
   titleBar.innerHTML = fig1[0] + 'LEVEL: ' + fig2;
 }
@@ -1195,7 +1195,7 @@ function scoreCredit(num) {
   }
 
   var fig1 = titleBar.innerHTML.split('SCORE: ');
-  var fig2 = fig1[1].split('</CENTER>');
+  var fig2 = fig1[1].split('</center>');
 
   fig2[0] = score * scoreMultiplier;
   var fig2 = fig2.join('');
@@ -1205,7 +1205,7 @@ function scoreCredit(num) {
 
 function editLife(num) {
   var fig1 = titleBar.innerHTML.split('LIVES: ');
-  var fig2 = fig1[1].split('</CENTER>');
+  var fig2 = fig1[1].split('</center>');
   fig2[0] = parseFloat(fig2[0]) + num;
   var fig3 = fig2[0];
   fig2 = fig2.join('');
@@ -1219,7 +1219,7 @@ function editLife(num) {
 
 function editPickUps(num) {
   var fig1 = titleBar.innerHTML.split('PICK-UPS LEFT: ');
-  var fig2 = fig1[1].split('</CENTER>');
+  var fig2 = fig1[1].split('</center>');
   fig2[0] = parseFloat(fig2[0]) + num;
   var fig3 = fig2[0];
   var fig2 = fig2.join('');
