@@ -1074,7 +1074,7 @@ function moveTopReal(goingTo, objName, speed) {
     if (speed > 0) {
       if (obj.theTop < goingTo) {
         moveTimeouts[objName] = setTimeout(function() {
-          moveLeftReal(goingTo, objName, speed);
+          moveTopReal(goingTo, objName, speed);
         }, 10);
       } else {
         obj.setTop(goingTo);
@@ -1083,7 +1083,7 @@ function moveTopReal(goingTo, objName, speed) {
     } else {
       if (obj.theTop > goingTo) {
         moveTimeouts[objName] = setTimeout(function() {
-          moveLeftReal(goingTo, objName, speed);
+          moveTopReal(goingTo, objName, speed);
         }, 10);
       } else {
         obj.setTop(goingTo);
