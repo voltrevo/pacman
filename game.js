@@ -1333,7 +1333,7 @@ function moveEnemy(enemyName) {
 
 function turnEnemy(enemyName, leftNum) {
   var direction = (leftNum == 1) ? 'right' : 'left';
-  var enemy = movingPieceMap(enemyName);
+  var enemy = movingPieceMap[enemyName];
   enemy.setImage(fixEnemyName(enemyName) + direction + '.gif');
 }
 
@@ -1422,11 +1422,11 @@ function loseLifeReal() {
 }
 
 function ghostCollisionCheck() {
-  px = parseInt(playerSpan.style.left);
-  py = parseInt(playerSpan.style.top);
+  var px = parseInt(playerSpan.style.left);
+  var py = parseInt(playerSpan.style.top);
 
-  ex = parseInt(enemy1Span.style.left);
-  ey = parseInt(enemy1Span.style.top);
+  var ex = parseInt(enemy1Span.style.left);
+  var ey = parseInt(enemy1Span.style.top);
 
   if ((px + 34 > ex) && (px < ex + 22) && (py + 34 > ey) && (py < ey + 34)) {
     if (!disabledFlags.enemy1) {
