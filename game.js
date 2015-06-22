@@ -1,3 +1,5 @@
+'use strict';
+
 thisLevel = 0;
 lives = 1;
 score = 0;
