@@ -619,12 +619,12 @@ var gameFinished = false;
 document.onkeydown = keyDown;
 document.onkeyup = keyUp;
 
-leftKeyDown = false;
-upKeyDown = false;
-rightKeyDown = false;
-downKeyDown = false;
-rKeyDown = false;
-eKeyDown = false;
+var leftKeyDown = false;
+var upKeyDown = false;
+var rightKeyDown = false;
+var downKeyDown = false;
+var rKeyDown = false;
+var eKeyDown = false;
 
 function keyDown() {
   if (event.keyCode == 82) rKeyDown = true;
@@ -676,7 +676,7 @@ function keyDown() {
   }
 }
 
-tips = new Array;
+var tips = new Array;
 
 tips[0] = 'Use the \'P\' key to pause your game.';
 tips[1] = 'A harder difficulty will give you a better score,\nbut no score counts unless the game is finished.';
@@ -782,7 +782,7 @@ function gameEndWin() {
   displayCredits();
 }
 
-creditTimeout = setTimeout('', 10);
+var creditTimeout = setTimeout('', 10);
 clearTimeout(creditTimeout);
 
 function displayCredits() {
@@ -950,13 +950,13 @@ function moveTop(theTop) {
   }
 }
 
-playerMoveTimeout = setTimeout('', 10);
-enemy1MoveTimeout = setTimeout('', 10);
-enemy2MoveTimeout = setTimeout('', 10);
-enemy3MoveTimeout = setTimeout('', 10);
-enemy4MoveTimeout = setTimeout('', 10);
-enemy5MoveTimeout = setTimeout('', 10);
-enemy6MoveTimeout = setTimeout('', 10);
+var playerMoveTimeout = setTimeout('', 10);
+var enemy1MoveTimeout = setTimeout('', 10);
+var enemy2MoveTimeout = setTimeout('', 10);
+var enemy3MoveTimeout = setTimeout('', 10);
+var enemy4MoveTimeout = setTimeout('', 10);
+var enemy5MoveTimeout = setTimeout('', 10);
+var enemy6MoveTimeout = setTimeout('', 10);
 
 function moveLeftReal(goingTo, objName, speed) {
   if (!moveDisabled && !eval(objName + 'Disabled')) {
@@ -1023,7 +1023,7 @@ function playerMoveEnd() {
   }
 }
 
-player = new movingPiece('player', -1, -1, 3, 3, 3, 'playerSpan', 'Graphics/Player/player1right.gif', 'playerImg', 'playerMoveEnd();');
+var player = new movingPiece('player', -1, -1, 3, 3, 3, 'playerSpan', 'Graphics/Player/player1right.gif', 'playerImg', 'playerMoveEnd();');
 
 function testOnOrb() {
   if (checkInteger(player.theLeft) && checkInteger(player.theTop)) {
@@ -1042,7 +1042,7 @@ function testOnOrb() {
   }
 }
 
-chasingTimeout = setTimeout('', 10);
+var chasingTimeout = setTimeout('', 10);
 
 function pickUpBigOrb() {
   clearTimeout(emptyChaseBarTimeout);
@@ -1053,7 +1053,7 @@ function pickUpBigOrb() {
   chasingGhosts = true;
 }
 
-emptyChaseBarTimeout = setTimeout('', 10);
+var emptyChaseBarTimeout = setTimeout('', 10);
 
 function emptyChaseBar() {
   if (parseInt(chaseBarFill.style.width) != 0) {
@@ -1195,12 +1195,12 @@ function goNextLevel() {
   }
 }
 
-enemy1 = new movingPiece('enemy1', -1, -1, 9, 3, 2, 'enemy1Span', 'Graphics/Enemy/enemy1left.gif', 'enemy1Img', 'moveEnemy(\'enemy1\');');
-enemy2 = new movingPiece('enemy2', -1, -1, 9, 3, 2, 'enemy2Span', 'Graphics/Enemy/enemy2left.gif', 'enemy2Img', 'moveEnemy(\'enemy2\');');
-enemy3 = new movingPiece('enemy3', -1, -1, 9, 3, 2, 'enemy3Span', 'Graphics/Enemy/enemy3left.gif', 'enemy3Img', 'moveEnemy(\'enemy3\');');
-enemy4 = new movingPiece('enemy4', -1, -1, 9, 3, 2, 'enemy4Span', 'Graphics/Enemy/enemy1left.gif', 'enemy4Img', 'moveEnemy(\'enemy4\');');
-enemy5 = new movingPiece('enemy5', -1, -1, 9, 3, 2, 'enemy5Span', 'Graphics/Enemy/enemy2left.gif', 'enemy5Img', 'moveEnemy(\'enemy5\');');
-enemy6 = new movingPiece('enemy6', -1, -1, 9, 3, 2, 'enemy6Span', 'Graphics/Enemy/enemy3left.gif', 'enemy6Img', 'moveEnemy(\'enemy6\');');
+var enemy1 = new movingPiece('enemy1', -1, -1, 9, 3, 2, 'enemy1Span', 'Graphics/Enemy/enemy1left.gif', 'enemy1Img', 'moveEnemy(\'enemy1\');');
+var enemy2 = new movingPiece('enemy2', -1, -1, 9, 3, 2, 'enemy2Span', 'Graphics/Enemy/enemy2left.gif', 'enemy2Img', 'moveEnemy(\'enemy2\');');
+var enemy3 = new movingPiece('enemy3', -1, -1, 9, 3, 2, 'enemy3Span', 'Graphics/Enemy/enemy3left.gif', 'enemy3Img', 'moveEnemy(\'enemy3\');');
+var enemy4 = new movingPiece('enemy4', -1, -1, 9, 3, 2, 'enemy4Span', 'Graphics/Enemy/enemy1left.gif', 'enemy4Img', 'moveEnemy(\'enemy4\');');
+var enemy5 = new movingPiece('enemy5', -1, -1, 9, 3, 2, 'enemy5Span', 'Graphics/Enemy/enemy2left.gif', 'enemy5Img', 'moveEnemy(\'enemy5\');');
+var enemy6 = new movingPiece('enemy6', -1, -1, 9, 3, 2, 'enemy6Span', 'Graphics/Enemy/enemy3left.gif', 'enemy6Img', 'moveEnemy(\'enemy6\');');
 
 function moveEnemy(enemyName) {
   var thisOb = eval(enemyName);
@@ -1485,9 +1485,9 @@ function killEnemy(enemyName) {
   }
 }
 
-monitorTimeout = setTimeout('', 10);
+var monitorTimeout = setTimeout('', 10);
 
-collisionMonitorCount = 0;
+var collisionMonitorCount = 0;
 
 function monitorCollisions() {
   if (monitorRunning) ghostCollisionCheck();
