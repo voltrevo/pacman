@@ -10,14 +10,18 @@ var score = 0;
 var lifeCredits = 0;
 var chasingGhosts = false;
 var monitorRunning = false;
-var moveDisabled = false;
-var playerDisabled = false;
-var enemy1Disabled = false;
-var enemy2Disabled = false;
-var enemy3Disabled = false;
-var enemy4Disabled = false;
-var enemy5Disabled = false;
-var enemy6Disabled = false;
+
+var disabledFlags = {
+  move: false,
+  player: false,
+  enemy1: false,
+  enemy2: false,
+  enemy3: false,
+  enemy4: false,
+  enemy5: false,
+  enemy6: false
+};
+
 var killGhostCount = 100;
 var thisLevelSet = 0;
 var lifeCreditFrequency = 15000;
@@ -33,6 +37,8 @@ endGameMsgs[3] = 'Special Thanks: <a href=\'#\' onClick=\'goToDefLogic();\'>Bren
 endGameMsgs[4] = 'Special Thanks: Merryll-Anne Morris';
 var endGameMsgCount = 0;
 var pauseDisabled = false;
+
+var scoreMultiplier = 1;
 
 function goToFreewebs() {
   window.open('http://www.freewebs.com/javascriptmania');
@@ -66,7 +72,7 @@ function setOption(num) {
     chaseDecreaseNum = num + 3;
 
     blackTrans.innerHTML = '<img src=\'getReady.gif\'>';
-    moveBlackPiece('setUpLevel(0);');
+    moveBlackPiece(function() { setUpLevel(0); });
   }
 }
 
@@ -549,10 +555,12 @@ function setUpLevel(levelNum) {
       if (levels[thisLevelSet][levelNum][loop][loop2] == '1' || levels[thisLevelSet][levelNum][loop][loop2] == '2') {
         pickUpNum++;
       }
-      eval('cell_' + loop + '_' + loop2 + '.innerHTML=\'<img src=\'' + imageSRCs[levels[thisLevelSet][levelNum][loop][loop2]] + '\'>\';');
 
-      eval('cell_' + loop + '_' + loop2 + '.style.top=loop*40+20+' + imagePosAdders[levels[thisLevelSet][levelNum][loop][loop2]][0] + ';');
-      eval('cell_' + loop + '_' + loop2 + '.style.left=loop2*40+' + imagePosAdders[levels[thisLevelSet][levelNum][loop][loop2]][1] + ';');
+      var cell = domById('cell_' + loop + '_' + loop2);
+      cell.innerHTML =  '<img src=\'' + imageSRCs[levels[thisLevelSet][levelNum][loop][loop2]] + '\'>';
+
+      cell.style.top = loop * 40 + 20 + imagePosAdders[levels[thisLevelSet][levelNum][loop][loop2]][0];
+      cell.style.left = loop2 * 40 + imagePosAdders[levels[thisLevelSet][levelNum][loop][loop2]][1];
 
       loop2++;
     }
@@ -595,12 +603,12 @@ function setUpLevel(levelNum) {
   enemy6.setLeft(fig1[0]);
   enemy6.setTop(fig1[1]);
 
-  enemy1Disabled = false;
-  enemy2Disabled = false;
-  enemy3Disabled = false;
-  enemy4Disabled = false;
-  enemy5Disabled = false;
-  enemy6Disabled = false;
+  disabledFlags.enemy1 = false;
+  disabledFlags.enemy2 = false;
+  disabledFlags.enemy3 = false;
+  disabledFlags.enemy4 = false;
+  disabledFlags.enemy5 = false;
+  disabledFlags.enemy6 = false;
 
   enemy1.setImage('Graphics/Enemy/enemy1right.gif');
   enemy2.setImage('Graphics/Enemy/enemy2left.gif');
@@ -639,7 +647,10 @@ function keyDown() {
       rKeyDown = false;
       eKeyDown = false;
       pauseDisabled = true;
-      setTimeout('pauseDisabled=false;', 100);
+
+      setTimeout(function() {
+        pauseDisabled = false;
+      }, 100);
     }
   }
   if (event.keyCode == leftButtons[controlSelection]) {
@@ -669,7 +680,11 @@ function keyDown() {
     eKeyDown = false;
   } else if (gameStarted && eKeyDown && rKeyDown) {
     disableBlackPiece = true;
-    setTimeout('disableBlackPiece=false;', 500);
+    
+    setTimeout(function() {
+      disableBlackPiece = false;
+    }, 500);
+
     resetGame();
     eKeyDown = false;
     rKeyDown = false;
@@ -712,7 +727,7 @@ function keyUp() {
 }
 
 function checkInteger(num) {
-  var num = eval(num);
+  var num = parseFloat(num);
 
   return (num != (Math.round(num))) ? false : true;
 }
@@ -720,7 +735,7 @@ function checkInteger(num) {
 function goUp() {
   if (gameStarted == true && gameFinished == false) {
     if (checkInteger(player.theLeft)) {
-      if (!testBlocked(player.theLeft, eval(player.theTop) - 1)) {
+      if (!testBlocked(player.theLeft, parseFloat(player.theTop) - 1)) {
         playerNum = -1;
         playerTopLeft = false;
         player.moveTop(-1);
@@ -732,7 +747,7 @@ function goUp() {
 function goDown() {
   if (gameStarted == true && gameFinished == false) {
     if (checkInteger(player.theLeft)) {
-      if (!testBlocked(player.theLeft, eval(player.theTop) + 1)) {
+      if (!testBlocked(player.theLeft, parseFloat(player.theTop) + 1)) {
         playerNum = 1;
         playerTopLeft = false;
         player.moveTop(1);
@@ -748,7 +763,7 @@ function goLeft() {
     player.setImage('Graphics/Player/Player' + playerNum + 'left.gif');
 
     if (checkInteger(player.theTop)) {
-      if (!testBlocked(eval(player.theLeft) - 1, player.theTop)) {
+      if (!testBlocked(parseFloat(player.theLeft) - 1, player.theTop)) {
         playerNum = -1;
         playerTopLeft = true;
         player.moveLeft(-1);
@@ -764,7 +779,7 @@ function goRight() {
     player.setImage('Graphics/Player/Player' + playerNum + 'right.gif');
 
     if (checkInteger(player.theTop)) {
-      if (!testBlocked(eval(player.theLeft) + 1, player.theTop)) {
+      if (!testBlocked(parseFloat(player.theLeft) + 1, player.theTop)) {
         playerNum = 1;
         playerTopLeft = true;
         player.moveLeft(1);
@@ -774,7 +789,7 @@ function goRight() {
 }
 
 function gameEndWin() {
-  moveDisabled = true;
+  disabledFlags.move = true;
   gameFinished = true;
   titleDisplayer.style.left = 0;
   titleDisplayer.innerHTML = '<img src=\'congratulations.gif\'>';
@@ -782,7 +797,7 @@ function gameEndWin() {
   displayCredits();
 }
 
-var creditTimeout = setTimeout('', 10);
+var creditTimeout = 0;
 clearTimeout(creditTimeout);
 
 function displayCredits() {
@@ -791,12 +806,12 @@ function displayCredits() {
   creditSpan.innerHTML = endGameMsgs[endGameMsgCount];
   endGameMsgCount++;
 
-  creditTimeout = setTimeout('displayCredits();', 2000);
+  creditTimeout = setTimeout(displayCredits, 2000);
 }
 
 function gameEndLose() {
   disableBlackPiece = true;
-  moveDisabled = true;
+  disabledFlags.move = true;
 
   resetGame();
 }
@@ -857,14 +872,16 @@ function resetGame() {
   keys1.style.left = 263;
   keys2.style.left = 508;
 
-  moveDisabled = false;
-  playerDisabled = false;
-  enemy1Disabled = false;
-  enemy2Disabled = false;
-  enemy3Disabled = false;
-  enemy4Disabled = false;
-  enemy5Disabled = false;
-  enemy6Disabled = false;
+  disabledFlags = {
+    move: false,
+    player: false,
+    enemy1: false,
+    enemy2: false,
+    enemy3: false,
+    enemy4: false,
+    enemy5: false,
+    enemy6: false
+  };
 
   titleDisplayer.style.left = 0;
   keys0.style.left = 18;
@@ -890,13 +907,15 @@ function setPlayerImg() {
 
   playerImgCount++;
 
-  setTimeout('setPlayerImg();', 100);
+  setTimeout(setPlayerImg, 100);
 }
 
+var movingPieceMap = {};
+
 function movingPiece(objName, theLeft, theTop, XOffSet, YOffSet, speed, spanId, imageRef, imageId, moveEndCommand) {
-  var theLeft = eval(theLeft);
-  var theTop = eval(theTop);
-  var speed = eval(speed);
+  var theLeft = parseFloat(theLeft);
+  var theTop = parseFloat(theTop);
+  var speed = parseFloat(speed);
 
   document.write('<span id=\'' + spanId + '\' style=\'position:absolute;left:' + (theLeft * 40 + XOffSet) + ';top:' + (theTop * 40 + 20 + YOffSet) + ';\'><img id=\'' + imageId + '\' src=\'' + imageRef + '\'></span>');
 
@@ -916,91 +935,98 @@ function movingPiece(objName, theLeft, theTop, XOffSet, YOffSet, speed, spanId, 
   this.moveLeft = moveLeft;
   this.moveTop = moveTop;
   this.setImage = setImage;
+
+  movingPieceMap[objName] = this;
 }
 
 function setImage(imageRef) {
   this.imageRef = imageRef;
-
-  eval(this.imageId + '.src=\'' + imageRef + '\';');
+  domById(this.imageId).setAttribute('src', imageRef);
 }
 
 function setLeft(theLeft) {
   this.theLeft = theLeft;
-
-  eval(this.spanId + '.style.left=' + (theLeft * 40 + this.XOffSet) + ';');
+  domById(this.spanId).style.left = (theLeft * 40 + this.XOffSet);
 }
 
 function setTop(theTop) {
   this.theTop = theTop;
-
-  eval(this.spanId + '.style.top=' + (theTop * 40 + 20 + this.YOffSet) + ';');
+  domById(this.spanId).style.top = (theTop * 40 + 20 + this.YOffSet);
 }
 
 function moveLeft(theLeft) {
   if (checkInteger(this.theLeft) && checkInteger(this.theTop)) {
     var speed = (theLeft > 0) ? this.speed : 0 - this.speed;
-    moveLeftReal((eval(this.theLeft) + eval(theLeft)), this.objName, speed);
+    moveLeftReal((parseFloat(this.theLeft) + parseFloat(theLeft)), this.objName, speed);
   }
 }
 
 function moveTop(theTop) {
   if (checkInteger(this.theTop) && checkInteger(this.theLeft)) {
     var speed = (theTop > 0) ? this.speed : 0 - this.speed;
-    moveTopReal((eval(this.theTop) + eval(theTop)), this.objName, speed);
+    moveTopReal((parseFloat(this.theTop) + parseFloat(theTop)), this.objName, speed);
   }
 }
 
-var playerMoveTimeout = setTimeout('', 10);
-var enemy1MoveTimeout = setTimeout('', 10);
-var enemy2MoveTimeout = setTimeout('', 10);
-var enemy3MoveTimeout = setTimeout('', 10);
-var enemy4MoveTimeout = setTimeout('', 10);
-var enemy5MoveTimeout = setTimeout('', 10);
-var enemy6MoveTimeout = setTimeout('', 10);
+var moveTimeouts = {
+  player: 0,
+  enemy1: 0,
+  enemy2: 0,
+  enemy3: 0,
+  enemy4: 0,
+  enemy5: 0,
+  enemy6: 0
+};
 
 function moveLeftReal(goingTo, objName, speed) {
-  if (!moveDisabled && !eval(objName + 'Disabled')) {
-    eval(objName + '.setLeft(eval(' + objName + '.theLeft)+(' + speed + '/40));');
+  if (!disabledFlags.move && !disabledFlags[objName]) {
+    var obj = movingPieceMap[objName];
+    obj.setLeft(obj.theLeft + speed / 40);
 
     if (speed > 0) {
-      if (eval(objName + '.theLeft') < goingTo) {
-        var evalString = 'moveLeftReal(' + goingTo + ',\'' + objName + '\',' + speed + ');';
-        eval(objName + 'MoveTimeout=setTimeout(\'' + evalString + '\', 10);');
+      if (obj.theLeft < goingTo) {
+        moveTimeouts[objName] = setTimeout(function() {
+          moveLeftReal(goingTo, objName, speed);
+        }, 10);
       } else {
-        eval(objName + '.setLeft(' + goingTo + ');');
-        eval(eval(objName + '.moveEndCommand'));
+        obj.setLeft(goingTo);
+        obj.moveEndCommand();
       }
     } else {
-      if (eval(objName + '.theLeft') > goingTo) {
-        var evalString = 'moveLeftReal(' + goingTo + ',\'' + objName + '\',' + speed + ');';
-        eval(objName + 'MoveTimeout=setTimeout(\'' + evalString + '\', 10);');
+      if (obj.theLeft > goingTo) {
+        moveTimeouts[objName] = setTimeout(function() {
+          moveLeftReal(goingTo, objName, speed);
+        }, 10);
       } else {
-        eval(objName + '.setLeft(' + goingTo + ');');
-        eval(eval(objName + '.moveEndCommand'));
+        obj.setLeft(goingTo);
+        obj.moveEndCommand();
       }
     }
   }
 }
 
 function moveTopReal(goingTo, objName, speed) {
-  if (!moveDisabled && !eval(objName + 'Disabled')) {
-    eval(objName + '.setTop(eval(' + objName + '.theTop)+(' + speed + '/40));');
+  if (!disabledFlags.move && !disabledFlags[objName]) {
+    var obj = movingPieceMap[objName];
+    obj.setTop(obj.theTop + speed / 40);
 
     if (speed > 0) {
-      if (eval(objName + '.theTop') < goingTo) {
-        var evalString = 'moveTopReal(' + goingTo + ',\'' + objName + '\',' + speed + ');';
-        eval(objName + 'MoveTimeout=setTimeout(\'' + evalString + '\', 10);');
+      if (obj.theTop < goingTo) {
+        moveTimeouts[objName] = setTimeout(function() {
+          moveLeftReal(goingTo, objName, speed);
+        }, 10);
       } else {
-        eval(objName + '.setTop(' + goingTo + ');');
-        eval(eval(objName + '.moveEndCommand'));
+        obj.setTop(goingTo);
+        obj.moveEndCommand();
       }
     } else {
-      if (eval(objName + '.theTop') > goingTo) {
-        var evalString = 'moveTopReal(' + goingTo + ',\'' + objName + '\',' + speed + ');';
-        eval(objName + 'MoveTimeout=setTimeout(\'' + evalString + '\', 10);');
+      if (obj.theTop > goingTo) {
+        moveTimeouts[objName] = setTimeout(function() {
+          moveLeftReal(goingTo, objName, speed);
+        }, 10);
       } else {
-        eval(objName + '.setTop(' + goingTo + ');');
-        eval(eval(objName + '.moveEndCommand'));
+        obj.setTop(goingTo);
+        obj.moveEndCommand();
       }
     }
   }
@@ -1009,31 +1035,37 @@ function moveTopReal(goingTo, objName, speed) {
 function playerMoveEnd() {
   playerTopLeft = null;
   testOnOrb();
+
   if (leftKeyDown) {
     goLeft();
   }
+
   if (upKeyDown) {
     goUp();
   }
+
   if (rightKeyDown) {
     goRight();
   }
+
   if (downKeyDown) {
     goDown();
   }
 }
 
-var player = new movingPiece('player', -1, -1, 3, 3, 3, 'playerSpan', 'Graphics/Player/player1right.gif', 'playerImg', 'playerMoveEnd();');
+var player = new movingPiece('player', -1, -1, 3, 3, 3, 'playerSpan', 'Graphics/Player/player1right.gif', 'playerImg', playerMoveEnd);
 
 function testOnOrb() {
   if (checkInteger(player.theLeft) && checkInteger(player.theTop)) {
-    var cellNameOn = 'cell_' + player.theTop + '_' + player.theLeft;
-    if (eval(cellNameOn + '.innerHTML.indexOf(\'Dot.gif\');') != -1) {
-      if (eval(cellNameOn + '.innerHTML.indexOf(\'bigDot.gif\');') != -1) {
+    var cell = domById('cell_' + player.theTop + '_' + player.theLeft);
+
+    if (cell.innerHTML.indexOf('Dot.gif') != -1) {
+      if (cell.innerHTML.indexOf('bigDot.gif') != -1) {
         pickUpBigOrb();
       }
+
       var blankString = '<img src=\'Graphics/blank.gif\'>';
-      eval(cellNameOn + '.innerHTML=blankString;');
+      cell.innerHTML = blankString;
       scoreCredit(25);
       editPickUps(-1);
     }
@@ -1042,7 +1074,7 @@ function testOnOrb() {
   }
 }
 
-var chasingTimeout = setTimeout('', 10);
+var chasingTimeout = 0;
 
 function pickUpBigOrb() {
   clearTimeout(emptyChaseBarTimeout);
@@ -1053,12 +1085,12 @@ function pickUpBigOrb() {
   chasingGhosts = true;
 }
 
-var emptyChaseBarTimeout = setTimeout('', 10);
+var emptyChaseBarTimeout = 0;
 
 function emptyChaseBar() {
   if (parseInt(chaseBarFill.style.width) != 0) {
     chaseBarFill.style.width = parseInt(chaseBarFill.style.width) - chaseDecreaseNum;
-    emptyChaseBarTimeout = setTimeout('emptyChaseBar();', 100);
+    emptyChaseBarTimeout = setTimeout(emptyChaseBar, 100);
   } else {
     chasingGhosts = false;
     changeGhostImages();
@@ -1067,29 +1099,46 @@ function emptyChaseBar() {
 }
 
 function changeGhostImages() {
-  if (enemy1Disabled) {
-    enemy1Disabled = false;
-    setTimeout('moveEnemy(\'enemy1\');', 500);
+  if (disabledFlags.enemy1) {
+    disabledFlags.enemy1 = false;
+    setTimeout(function() {
+      moveEnemy('enemy1');
+    }, 500);
   }
-  if (enemy2Disabled) {
-    enemy2Disabled = false;
-    setTimeout('moveEnemy(\'enemy2\');', 500);
+
+  if (disabledFlags.enemy2) {
+    disabledFlags.enemy2 = false;
+    setTimeout(function() {
+      moveEnemy('enemy2');
+    }, 500);
   }
-  if (enemy3Disabled) {
-    enemy3Disabled = false;
-    setTimeout('moveEnemy(\'enemy3\');', 500);
+
+  if (disabledFlags.enemy3) {
+    disabledFlags.enemy3 = false;
+    setTimeout(function() {
+      moveEnemy('enemy3');
+    }, 500);
   }
-  if (enemy4Disabled) {
-    enemy4Disabled = false;
-    setTimeout('moveEnemy(\'enemy4\');', 500);
+
+  if (disabledFlags.enemy4) {
+    disabledFlags.enemy4 = false;
+    setTimeout(function() {
+      moveEnemy('enemy4');
+    }, 500);
   }
-  if (enemy5Disabled) {
-    enemy5Disabled = false;
-    setTimeout('moveEnemy(\'enemy5\');', 500);
+
+  if (disabledFlags.enemy5) {
+    disabledFlags.enemy5 = false;
+    setTimeout(function() {
+      moveEnemy('enemy5');
+    }, 500);
   }
-  if (enemy6Disabled) {
-    enemy6Disabled = false;
-    setTimeout('moveEnemy(\'enemy6\');', 500);
+
+  if (disabledFlags.enemy6) {
+    disabledFlags.enemy6 = false;
+    setTimeout(function() {
+      moveEnemy('enemy6');
+    }, 500);
   }
 
   if (enemy1.imageRef.indexOf('Captured') == -1) enemy1.setImage('Graphics/Enemy/enemy1left.gif');
@@ -1103,7 +1152,7 @@ function changeGhostImages() {
 function testBlocked(theLeft, theTop) {
   if (checkInteger(theLeft) && checkInteger(theTop)) {
 
-    var thisCellData = eval('cell_' + theTop + '_' + theLeft + '.innerHTML.split(\'/\');');
+    var thisCellData = domById('cell_' + theTop + '_' + theLeft).innerHTML.split('/');
     var thisCellData = thisCellData[thisCellData.length - 1].split('.');
     var thisCellData = thisCellData[0];
 
@@ -1157,9 +1206,9 @@ function scoreCredit(num) {
 function editLife(num) {
   var fig1 = titleBar.innerHTML.split('LIVES: ');
   var fig2 = fig1[1].split('</CENTER>');
-  fig2[0] = eval(fig2[0]) + num;
+  fig2[0] = parseFloat(fig2[0]) + num;
   var fig3 = fig2[0];
-  var fig2 = fig2.join('');
+  fig2 = fig2.join('');
 
   titleBar.innerHTML = fig1[0] + 'LIVES: ' + fig2;
 
@@ -1171,7 +1220,7 @@ function editLife(num) {
 function editPickUps(num) {
   var fig1 = titleBar.innerHTML.split('PICK-UPS LEFT: ');
   var fig2 = fig1[1].split('</CENTER>');
-  fig2[0] = eval(fig2[0]) + num;
+  fig2[0] = parseFloat(fig2[0]) + num;
   var fig3 = fig2[0];
   var fig2 = fig2.join('');
 
@@ -1189,21 +1238,21 @@ function goNextLevel() {
     alert();
     gameEndWin();
   } else {
-    moveDisabled = true;
+    disabledFlags.move = true;
     blackTrans.innerHTML = '<img src=\'coverPiece2.gif\'>';
-    moveBlackPiece('setUpLevel(' + thisLevel + ');');
+    moveBlackPiece(function() { setUpLevel(thisLevel); });
   }
 }
 
-var enemy1 = new movingPiece('enemy1', -1, -1, 9, 3, 2, 'enemy1Span', 'Graphics/Enemy/enemy1left.gif', 'enemy1Img', 'moveEnemy(\'enemy1\');');
-var enemy2 = new movingPiece('enemy2', -1, -1, 9, 3, 2, 'enemy2Span', 'Graphics/Enemy/enemy2left.gif', 'enemy2Img', 'moveEnemy(\'enemy2\');');
-var enemy3 = new movingPiece('enemy3', -1, -1, 9, 3, 2, 'enemy3Span', 'Graphics/Enemy/enemy3left.gif', 'enemy3Img', 'moveEnemy(\'enemy3\');');
-var enemy4 = new movingPiece('enemy4', -1, -1, 9, 3, 2, 'enemy4Span', 'Graphics/Enemy/enemy1left.gif', 'enemy4Img', 'moveEnemy(\'enemy4\');');
-var enemy5 = new movingPiece('enemy5', -1, -1, 9, 3, 2, 'enemy5Span', 'Graphics/Enemy/enemy2left.gif', 'enemy5Img', 'moveEnemy(\'enemy5\');');
-var enemy6 = new movingPiece('enemy6', -1, -1, 9, 3, 2, 'enemy6Span', 'Graphics/Enemy/enemy3left.gif', 'enemy6Img', 'moveEnemy(\'enemy6\');');
+var enemy1 = new movingPiece('enemy1', -1, -1, 9, 3, 2, 'enemy1Span', 'Graphics/Enemy/enemy1left.gif', 'enemy1Img', function() { moveEnemy('enemy1'); });
+var enemy2 = new movingPiece('enemy2', -1, -1, 9, 3, 2, 'enemy2Span', 'Graphics/Enemy/enemy2left.gif', 'enemy2Img', function() { moveEnemy('enemy2'); });
+var enemy3 = new movingPiece('enemy3', -1, -1, 9, 3, 2, 'enemy3Span', 'Graphics/Enemy/enemy3left.gif', 'enemy3Img', function() { moveEnemy('enemy3'); });
+var enemy4 = new movingPiece('enemy4', -1, -1, 9, 3, 2, 'enemy4Span', 'Graphics/Enemy/enemy1left.gif', 'enemy4Img', function() { moveEnemy('enemy4'); });
+var enemy5 = new movingPiece('enemy5', -1, -1, 9, 3, 2, 'enemy5Span', 'Graphics/Enemy/enemy2left.gif', 'enemy5Img', function() { moveEnemy('enemy5'); });
+var enemy6 = new movingPiece('enemy6', -1, -1, 9, 3, 2, 'enemy6Span', 'Graphics/Enemy/enemy3left.gif', 'enemy6Img', function() { moveEnemy('enemy6'); });
 
 function moveEnemy(enemyName) {
-  var thisOb = eval(enemyName);
+  var thisOb = movingPieceMap[enemyName];
   var theLeft = thisOb.theLeft;
   var theTop = thisOb.theTop;
 
@@ -1214,8 +1263,8 @@ function moveEnemy(enemyName) {
   var multiplier = (predictFig > 6) ? 6 : predictFig;
 
   if (playerTopLeft != null) {
-    if (playerTopLeft) var playerLeft = playerLeft + (playerNum * multiplier);
-    if (!playerTopLeft) var playerTop = playerTop + (playerNum * multiplier);
+    if (playerTopLeft) playerLeft = playerLeft + (playerNum * multiplier);
+    if (!playerTopLeft) playerTop = playerTop + (playerNum * multiplier);
   }
 
   var leftDif = fixNegative(player.theLeft - theLeft);
@@ -1224,58 +1273,58 @@ function moveEnemy(enemyName) {
   var topNum = (fixNegative(player.theTop - theTop) == player.theTop - theTop) ? 1 : -1;
 
   if (leftDif > topDif) {
-    var prior1 = 'thisOb.moveLeft(' + leftNum + ');';
-    var prior2 = 'thisOb.moveTop(' + topNum + ');';
-    var prior3 = 'thisOb.moveTop(' + (0 - topNum) + ');';
-    var prior4 = 'thisOb.moveLeft(' + (0 - leftNum) + ');';
+    var prior1 = function() { thisOb.moveLeft(leftNum); };
+    var prior2 = function() { thisOb.moveTop(topNum); };
+    var prior3 = function() { thisOb.moveTop(0 - topNum); };
+    var prior4 = function() { thisOb.moveLeft(0 - leftNum); };
 
     if (chasingGhosts) {
-      if (!testBlocked(eval(theLeft) - leftNum, theTop)) {
-        eval(prior4);
+      if (!testBlocked(parseFloat(theLeft) - leftNum, theTop)) {
+        prior4();
         turnEnemy(enemyName, 0 - leftNum);
-      } else if (!testBlocked(theLeft, eval(theTop) - topNum)) eval(prior3);
-      else if (!testBlocked(theLeft, eval(theTop) + topNum)) eval(prior2);
-      else if (!testBlocked(eval(theLeft) + leftNum, theTop)) {
-        eval(prior1);
+      } else if (!testBlocked(theLeft, parseFloat(theTop) - topNum)) prior3();
+      else if (!testBlocked(theLeft, parseFloat(theTop) + topNum)) prior2();
+      else if (!testBlocked(parseFloat(theLeft) + leftNum, theTop)) {
+        prior1();
         turnEnemy(enemyName, leftNum);
-      } else setTimeout('moveEnemy(\'' + enemyName + '\');', 500);
+      } else setTimeout(function() { moveEnemy(enemyName); }, 500);
     } else {
-      if (!testBlocked(eval(theLeft) + leftNum, theTop)) {
-        eval(prior1);
+      if (!testBlocked(parseFloat(theLeft) + leftNum, theTop)) {
+        prior1();
         turnEnemy(enemyName, leftNum);
-      } else if (!testBlocked(theLeft, eval(theTop) + topNum)) eval(prior2);
-      else if (!testBlocked(theLeft, eval(theTop) - topNum)) eval(prior3);
-      else if (!testBlocked(eval(theLeft) - leftNum, theTop)) {
-        eval(prior4);
+      } else if (!testBlocked(theLeft, parseFloat(theTop) + topNum)) prior2();
+      else if (!testBlocked(theLeft, parseFloat(theTop) - topNum)) prior3();
+      else if (!testBlocked(parseFloat(theLeft) - leftNum, theTop)) {
+        prior4();
         turnEnemy(enemyName, 0 - leftNum);
-      } else setTimeout('moveEnemy(\'' + enemyName + '\');', 500);
+      } else setTimeout(function() { moveEnemy(enemyName); }, 500);
     }
   } else {
-    var prior1 = 'thisOb.moveTop(' + topNum + ');';
-    var prior2 = 'thisOb.moveLeft(' + leftNum + ');';
-    var prior3 = 'thisOb.moveLeft(' + (0 - leftNum) + ');';
-    var prior4 = 'thisOb.moveTop(' + (0 - topNum) + ');';
+    var prior1 = function() { thisOb.moveTop(topNum); };
+    var prior2 = function() { thisOb.moveLeft(leftNum); };
+    var prior3 = function() { thisOb.moveLeft(0 - leftNum); };
+    var prior4 = function() { thisOb.moveTop(0 - topNum); };
 
     if (chasingGhosts) {
-      if (!testBlocked(theLeft, eval(theTop) - topNum)) eval(prior4);
-      else if (!testBlocked(eval(theLeft) - leftNum, theTop)) {
-        eval(prior3);
+      if (!testBlocked(theLeft, parseFloat(theTop) - topNum)) prior4();
+      else if (!testBlocked(parseFloat(theLeft) - leftNum, theTop)) {
+        prior3();
         turnEnemy(enemyName, 0 - leftNum);
-      } else if (!testBlocked(eval(theLeft) + leftNum, theTop)) {
-        eval(prior2);
+      } else if (!testBlocked(parseFloat(theLeft) + leftNum, theTop)) {
+        prior2();
         turnEnemy(enemyName, leftNum);
-      } else if (!testBlocked(theLeft, eval(theTop) + topNum)) eval(prior1);
-      else setTimeout('moveEnemy(\'' + enemyName + '\');', 500);
+      } else if (!testBlocked(theLeft, parseFloat(theTop) + topNum)) prior1();
+      else setTimeout(function() { moveEnemy(enemyName); }, 500);
     } else {
-      if (!testBlocked(theLeft, eval(theTop) + topNum)) eval(prior1);
-      else if (!testBlocked(eval(theLeft) + leftNum, theTop)) {
-        eval(prior2);
+      if (!testBlocked(theLeft, parseFloat(theTop) + topNum)) prior1();
+      else if (!testBlocked(parseFloat(theLeft) + leftNum, theTop)) {
+        prior2();
         turnEnemy(enemyName, leftNum);
-      } else if (!testBlocked(eval(theLeft) - leftNum, theTop)) {
-        eval(prior3);
+      } else if (!testBlocked(parseFloat(theLeft) - leftNum, theTop)) {
+        prior3();
         turnEnemy(enemyName, 0 - leftNum);
-      } else if (!testBlocked(theLeft, eval(theTop) - topNum)) eval(prior4);
-      else setTimeout('moveEnemy(\'' + enemyName + '\');', 500);
+      } else if (!testBlocked(theLeft, parseFloat(theTop) - topNum)) prior4();
+      else setTimeout(function() { moveEnemy(enemyName); }, 500);
     }
   }
 
@@ -1284,11 +1333,12 @@ function moveEnemy(enemyName) {
 
 function turnEnemy(enemyName, leftNum) {
   var direction = (leftNum == 1) ? 'right' : 'left';
-  eval(enemyName + '.setImage(\'' + fixEnemyName(enemyName) + direction + '.gif\');');
+  var enemy = movingPieceMap(enemyName);
+  enemy.setImage(fixEnemyName(enemyName) + direction + '.gif');
 }
 
 function changeEnemyImage(enemyName) {
-  var thisOb = eval(enemyName);
+  var thisOb = movingPieceMap[enemyName];
   var thisImg = thisOb.imageRef;
 
   var thisEnemyNum = enemyName.charAt(enemyName.length - 1);
@@ -1310,24 +1360,24 @@ function changeEnemyImage(enemyName) {
 }
 
 function fixEnemyName(theName) {
-  var num = eval(theName.charAt(theName.length - 1));
+  var num = parseFloat(theName.charAt(theName.length - 1));
   if (num > 3) {
-    var num = num - 3;
+    num = num - 3;
   }
   return 'Graphics/Enemy/enemy' + num;
 }
 
 function fixNegative(num) {
   var num = num + '';
-  var num = replace(num, '-', '');
+  num = replace(num, '-', '');
 
-  return eval(num);
+  return parseFloat(num);
 }
 
 function loseLife() {
-  moveDisabled = true;
+  disabledFlags.move = true;
   blackTrans.innerHTML = '<img src=\'coverPiece.gif\'>';
-  moveBlackPiece('loseLifeReal();');
+  moveBlackPiece(loseLifeReal);
 }
 
 function loseLifeReal() {
@@ -1379,7 +1429,7 @@ function ghostCollisionCheck() {
   ey = parseInt(enemy1Span.style.top);
 
   if ((px + 34 > ex) && (px < ex + 22) && (py + 34 > ey) && (py < ey + 34)) {
-    if (!enemy1Disabled) {
+    if (!disabledFlags.enemy1) {
       if (chasingGhosts) {
         killEnemy('enemy1');
       } else {
@@ -1392,7 +1442,7 @@ function ghostCollisionCheck() {
     ey = parseInt(enemy2Span.style.top);
 
     if ((px + 34 > ex) && (px < ex + 22) && (py + 34 > ey) && (py < ey + 34)) {
-      if (!enemy2Disabled) {
+      if (!disabledFlags.enemy2) {
         if (chasingGhosts) {
           killEnemy('enemy2');
         } else {
@@ -1405,7 +1455,7 @@ function ghostCollisionCheck() {
       ey = parseInt(enemy3Span.style.top);
 
       if ((px + 34 > ex) && (px < ex + 22) && (py + 34 > ey) && (py < ey + 34)) {
-        if (!enemy3Disabled) {
+        if (!disabledFlags.enemy3) {
           if (chasingGhosts) {
             killEnemy('enemy3');
           } else {
@@ -1418,7 +1468,7 @@ function ghostCollisionCheck() {
         ey = parseInt(enemy4Span.style.top);
 
         if ((px + 34 > ex) && (px < ex + 22) && (py + 34 > ey) && (py < ey + 34)) {
-          if (!enemy4Disabled) {
+          if (!disabledFlags.enemy4) {
             if (chasingGhosts) {
               killEnemy('enemy4');
             } else {
@@ -1431,7 +1481,7 @@ function ghostCollisionCheck() {
           ey = parseInt(enemy5Span.style.top);
 
           if ((px + 34 > ex) && (px < ex + 22) && (py + 34 > ey) && (py < ey + 34)) {
-            if (!enemy5Disabled) {
+            if (!disabledFlags.enemy5) {
               if (chasingGhosts) {
                 killEnemy('enemy5');
               } else {
@@ -1444,7 +1494,7 @@ function ghostCollisionCheck() {
             ey = parseInt(enemy6Span.style.top);
 
             if ((px + 34 > ex) && (px < ex + 22) && (py + 34 > ey) && (py < ey + 34)) {
-              if (!enemy6Disabled) {
+              if (!disabledFlags.enemy6) {
                 if (chasingGhosts) {
                   killEnemy('enemy6');
                 } else {
@@ -1462,48 +1512,51 @@ function ghostCollisionCheck() {
 
 function killEnemy(enemyName) {
   if (thisLevel < levels[thisLevelSet].length) {
-    eval(enemyName + 'Disabled=true;');
-    var fig1 = levels[thisLevelSet][thisLevel][13][eval(enemyName.charAt(enemyName.length - 1))].split('-');
+    var enemy = movingPieceMap[enemyName];
+    disabledFlags[enemyName] = true;
+    var fig1 = levels[thisLevelSet][thisLevel][13][parseFloat(enemyName.charAt(enemyName.length - 1))].split('-');
     var fig2 = fig1[0];
     var fig3 = fig1[1];
-    eval(enemyName + '.setLeft(' + fig2 + ');');
-    eval(enemyName + '.setTop(' + fig3 + ');');
+    enemy.setLeft(fig2);
+    enemy.setTop(fig3);
     var ranNum = Math.ceil(Math.random() * 2);
 
-    eval(enemyName + '.setImage(\'Graphics/Enemy/enemyCaptured' + ranNum + '.gif\');');
+    enemy.setImage('Graphics/Enemy/enemyCaptured' + ranNum + '.gif');
 
-    eval('scoreDisplayer' + killGhostCount + '.style.left=' + (player.theLeft * 40 + 10) + ';');
-    eval('scoreDisplayer' + killGhostCount + '.style.top=' + (player.theTop * 40 + 10) + ';');
+    domById('scoreDisplayer' + killGhostCount).style.left = (player.theLeft * 40 + 10);
+    domById('scoreDisplayer' + killGhostCount).style.top = (player.theTop * 40 + 10);
 
     scoreCredit(killGhostCount);
 
-    setTimeout('scoreDisplayer' + killGhostCount + '.style.left=-100;', 750);
-    setTimeout('scoreDisplayer' + killGhostCount + '.style.top=-100;', 750);
+    setTimeout(function() {
+      domById('scoreDisplayer' + killGhostCount).style.left = -100;
+      domById('scoreDisplayer' + killGhostCount).style.top = -100;
+    }, 750);
 
     killGhostCount = killGhostCount * 2;
     killGhostCount = (killGhostCount == 6400) ? 3200 : killGhostCount;
   }
 }
 
-var monitorTimeout = setTimeout('', 10);
+var monitorTimeout = 0;
 
 var collisionMonitorCount = 0;
 
 function monitorCollisions() {
   if (monitorRunning) ghostCollisionCheck();
-  setTimeout('monitorCollisions();', 100);
+  setTimeout(monitorCollisions, 100);
 }
 
 function moveBlackPiece(coverCommand) {
   if (!disableBlackPiece) {
-    moveDisabled = true;
-    if (parseInt(blackTrans.style.left) == 0) eval(coverCommand);
+    disabledFlags.move = true;
+    if (parseInt(blackTrans.style.left) == 0) coverCommand();
     blackTrans.style.left = parseInt(blackTrans.style.left) + 5;
-    if (parseInt(blackTrans.style.left) < 760) setTimeout('moveBlackPiece(\'' + coverCommand + '\');', 10);
+    if (parseInt(blackTrans.style.left) < 760) setTimeout(function() { moveBlackPiece(coverCommand); }, 10);
     else {
       blackTrans.style.left = -760;
       monitorRunning = true;
-      moveDisabled = false;
+      disabledFlags.move = false;
 
       if (parseInt(titleDisplayer.style.left) != 0) {
         gameStarted = true;
