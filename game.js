@@ -1,5 +1,9 @@
 'use strict';
 
+var domById = function(id) {
+  return document.getElementById(id);
+};
+
 var thisLevel = 0;
 var lives = 1;
 var score = 0;
@@ -42,9 +46,9 @@ function setOption(num) {
   if (optionCount == 0) {
     optionCount++;
     controlSelection = num;
-    document.option1.src = 'easyImg.gif';
-    document.option2.src = 'mediumImg.gif';
-    document.option3.src = 'hardImg.gif';
+    domById('option1').src = 'easyImg.gif';
+    domById('option2').src = 'mediumImg.gif';
+    domById('option3').src = 'hardImg.gif';
     optionText.innerHTML = 'Select Difficulty Level';
     optionText.style.left = 175;
     scoreNote.style.left = 0;
@@ -866,9 +870,9 @@ function resetGame() {
   keys0.style.left = 18;
   keys1.style.left = 263;
   keys2.style.left = 508;
-  document.option1.src = 'keys0img.gif';
-  document.option2.src = 'keys1img.gif';
-  document.option3.src = 'keys2img.gif';
+  domById('option1').src = 'keys0img.gif';
+  domById('option2').src = 'keys1img.gif';
+  domById('option3').src = 'keys2img.gif';
   optionText.innerHTML = 'Select Your Keys';
   optionText.style.left = 238;
   startButton.style.left = 301;
@@ -880,8 +884,8 @@ function resetGame() {
 function setPlayerImg() {
   playerImgCount = (playerImgCount == playerImgArray.length) ? 0 : playerImgCount;
 
-  var adder = (document.playerImg.src.indexOf('right') != -1) ? 'right' : 'left';
-  document.playerImg.src = 'Graphics/Player/player' + playerImgArray[playerImgCount] + adder + '.gif';
+  var adder = (domById('playerImg').src.indexOf('right') != -1) ? 'right' : 'left';
+  domById('playerImg').src = 'Graphics/Player/player' + playerImgArray[playerImgCount] + adder + '.gif';
   player.imageRef = 'Graphics/Player/player' + playerImgArray[playerImgCount] + adder + '.gif';
 
   playerImgCount++;
