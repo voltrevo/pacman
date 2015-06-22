@@ -58,23 +58,23 @@ function setOption(num) {
     domById('option1').src = 'easyImg.gif';
     domById('option2').src = 'mediumImg.gif';
     domById('option3').src = 'hardImg.gif';
-    optionText.innerHTML = 'Select Difficulty Level';
-    optionText.style.left = 175;
-    scoreNote.style.left = 0;
-    scoreNote.style.top = 500;
+    domById('optionText').innerHTML = 'Select Difficulty Level';
+    domById('optionText').style.left = 175;
+    domById('scoreNote').style.left = 0;
+    domById('scoreNote').style.top = 500;
   } else if (optionCount === 1) {
-    scoreNote.style.left = -760;
-    optionText.style.left = -760;
-    keys0.style.left = -760;
-    keys1.style.left = -760;
-    keys2.style.left = -760;
-    chaseBar.style.left = 230;
-    chaseBarFill.style.left = 230;
+    domById('scoreNote').style.left = -760;
+    domById('optionText').style.left = -760;
+    domById('keys0').style.left = -760;
+    domById('keys1').style.left = -760;
+    domById('keys2').style.left = -760;
+    domById('chaseBar').style.left = 230;
+    domById('chaseBarFill').style.left = 230;
     lifeCreditFrequency = 6300 * (num + 1);
     scoreMultiplier = num + 1;
     chaseDecreaseNum = num + 3;
 
-    blackTrans.innerHTML = '<img src=\'getReady.gif\'>';
+    domById('blackTrans').innerHTML = '<img src=\'getReady.gif\'>';
     moveBlackPiece(function() { setUpLevel(0); });
   }
 }
@@ -538,7 +538,6 @@ while (loop < 13) {
 
   while (loop2 < 19) {
     document.write('<span id=\'cell_' + loop + '_' + loop2 + '\' style=\'position:absolute;left:' + (loop2 * 40) + ';top:' + (loop * 40 + 20) + ';\'></span>');
-
     loop2++;
   }
 
@@ -547,9 +546,9 @@ while (loop < 13) {
 
 function setUpLevel(levelNum) {
   levelEdit(levelNum + 1);
-  titleDisplayer.style.left = -760;
-  if (levelNum === 0) guard.style.left = -760;
-  if (levelNum === 20) guard.style.left = 0;
+  domById('titleDisplayer').style.left = -760;
+  if (levelNum === 0) domById('guard').style.left = -760;
+  if (levelNum === 20) domById('guard').style.left = 0;
 
   var loop = 0;
   var pickUpNum = 0;
@@ -558,14 +557,23 @@ function setUpLevel(levelNum) {
     var loop2 = 0;
 
     while (loop2 < 19) {
-      if (levels[thisLevelSet][levelNum][loop][loop2] === 1 || levels[thisLevelSet][levelNum][loop][loop2] === 2) {
+      if (
+        levels[thisLevelSet][levelNum][loop][loop2] === 1 ||
+        levels[thisLevelSet][levelNum][loop][loop2] === 2
+      ) {
         pickUpNum++;
       }
 
       var cell = domById('cell_' + loop + '_' + loop2);
-      cell.innerHTML =  '<img src=\'' + imageSRCs[levels[thisLevelSet][levelNum][loop][loop2]] + '\'>';
 
-      cell.style.top = loop * 40 + 20 + imagePosAdders[levels[thisLevelSet][levelNum][loop][loop2]][0];
+      cell.innerHTML = (
+        '<img src=\'' + imageSRCs[levels[thisLevelSet][levelNum][loop][loop2]] + '\'>'
+      );
+
+      cell.style.top = (
+        loop * 40 + 20 + imagePosAdders[levels[thisLevelSet][levelNum][loop][loop2]][0]
+      );
+
       cell.style.left = loop2 * 40 + imagePosAdders[levels[thisLevelSet][levelNum][loop][loop2]][1];
 
       loop2++;
@@ -579,32 +587,32 @@ function setUpLevel(levelNum) {
   player.setLeft(fig1[0]);
   player.setTop(fig1[1]);
 
-  var fig1 = levels[thisLevelSet][levelNum][13][1];
+  fig1 = levels[thisLevelSet][levelNum][13][1];
 
   enemy1.setLeft(fig1[0]);
   enemy1.setTop(fig1[1]);
 
-  var fig1 = levels[thisLevelSet][levelNum][13][2];
+  fig1 = levels[thisLevelSet][levelNum][13][2];
 
   enemy2.setLeft(fig1[0]);
   enemy2.setTop(fig1[1]);
 
-  var fig1 = levels[thisLevelSet][levelNum][13][3];
+  fig1 = levels[thisLevelSet][levelNum][13][3];
 
   enemy3.setLeft(fig1[0]);
   enemy3.setTop(fig1[1]);
 
-  var fig1 = levels[thisLevelSet][levelNum][13][4];
+  fig1 = levels[thisLevelSet][levelNum][13][4];
 
   enemy4.setLeft(fig1[0]);
   enemy4.setTop(fig1[1]);
 
-  var fig1 = levels[thisLevelSet][levelNum][13][5];
+  fig1 = levels[thisLevelSet][levelNum][13][5];
 
   enemy5.setLeft(fig1[0]);
   enemy5.setTop(fig1[1]);
 
-  var fig1 = levels[thisLevelSet][levelNum][13][6];
+  fig1 = levels[thisLevelSet][levelNum][13][6];
 
   enemy6.setLeft(fig1[0]);
   enemy6.setTop(fig1[1]);
@@ -645,7 +653,7 @@ function keyDown() {
   if (event.keyCode === 69) eKeyDown = true;
   if (event.keyCode === 80) {
     if (!pauseDisabled) {
-      alert('-- Pause --\n\nTip: ' + randomTip());
+      window.alert('-- Pause --\n\nTip: ' + randomTip());
       leftKeyDown = false;
       upKeyDown = false;
       rightKeyDown = false;
@@ -677,7 +685,7 @@ function keyDown() {
   }
 
   if (!gameStarted && eKeyDown && rKeyDown) {
-    alert('You are not allowed to reset the game before\nit has started.');
+    window.alert('You are not allowed to reset the game before\nit has started.');
     leftKeyDown = false;
     upKeyDown = false;
     rightKeyDown = false;
@@ -699,14 +707,41 @@ function keyDown() {
 
 var tips = [
   'Use the \'P\' key to pause your game.',
-  'A harder difficulty will give you a better score,\nbut no score counts unless the game is finished.',
-  'The ghosts only follow you, and don\'t register obstacles.\nControl the ghosts, make them go where you want them to\ngo.',
+  (
+    'A harder difficulty will give you a better score,\n' +
+    'but no score counts unless the game is finished.'
+  ),
+  (
+    'The ghosts only follow you, and don\'t register obstacles.\n' +
+    'Control the ghosts, make them go where you want them to\n' +
+    'go.'
+  ),
   'You can cluster ghosts by moving around 2 or more of them.',
-  'The large dots in this game are essential, make sure\nyou only use them to eat the ghosts for points when\nyou can manage to collect the rest of the dots.',
-  'Because of a technical difficulty, you need to press\nyour directional key again AFTER the pause box is\nclosed.',
-  'For more great games, visit:\nJavascriptMania - http://www.freewebs.com/JavascriptMania\nOR\nDef-Logic Videogames - http://www.def-logic.com',
-  'This is a rather complex game, if the game is running\nslow, try closing some other open applications and\ncheck that all other user accounts are logged off.',
-  'If you wish to restart the game press E+R instead\nof refreshing the browser as this can result in extensive\nloading times especially if you are playing the game via the\ninternet.',
+  (
+    'The large dots in this game are essential, make sure\n' +
+    'you only use them to eat the ghosts for points when\n' +
+    'you can manage to collect the rest of the dots.'
+  ),
+  (
+    'Because of a technical difficulty, you need to press\n' +
+    'your directional key again AFTER the pause box is\n' +
+    'closed.'
+  ),
+  (
+    'For more great games, visit:\n' +
+    'JavascriptMania - http://www.freewebs.com/JavascriptMania\n' +
+    'OR\n' +
+    'Def-Logic Videogames - http://www.def-logic.com',
+    'This is a rather complex game, if the game is running\n' +
+    'slow, try closing some other open applications and\n' +
+    'check that all other user accounts are logged off.'
+  ),
+  (
+    'If you wish to restart the game press E+R instead\n' +
+    'of refreshing the browser as this can result in extensive\n' +
+    'loading times especially if you are playing the game via the\n' +
+    'internet.'
+  ),
   'You can use pause to plot strategies for levels.'
 ];
 
@@ -733,8 +768,7 @@ function keyUp() {
 }
 
 function checkInteger(num) {
-  var num = parseFloat(num);
-
+  num = parseFloat(num);
   return (num !== (Math.round(num))) ? false : true;
 }
 
@@ -797,8 +831,8 @@ function goRight() {
 function gameEndWin() {
   disabledFlags.move = true;
   gameFinished = true;
-  titleDisplayer.style.left = 0;
-  titleDisplayer.innerHTML = '<img src=\'congratulations.gif\'>';
+  domById('titleDisplayer').style.left = 0;
+  domById('titleDisplayer').innerHTML = '<img src=\'congratulations.gif\'>';
 
   displayCredits();
 }
@@ -808,8 +842,8 @@ clearTimeout(creditTimeout);
 
 function displayCredits() {
   endGameMsgCount = (endGameMsgCount === endGameMsgs.length) ? 0 : endGameMsgCount;
-  creditSpan.style.left = 0;
-  creditSpan.innerHTML = endGameMsgs[endGameMsgCount];
+  domById('creditSpan').style.left = 0;
+  domById('creditSpan').innerHTML = endGameMsgs[endGameMsgCount];
   endGameMsgCount++;
 
   creditTimeout = setTimeout(displayCredits, 2000);
@@ -823,41 +857,40 @@ function gameEndLose() {
 }
 
 function resetGame() {
-  creditSpan.innerHTML = '';
-
-  titleDisplayer.innerHTML = '<img src=\'startUp.gif\'>';
+  domById('creditSpan').innerHTML = '';
+  domById('titleDisplayer').innerHTML = '<img src=\'startUp.gif\'>';
 
   clearTimeout(creditTimeout);
 
-  chaseBarFill.style.width = 0;
+  domById('chaseBarFill').style.width = 0;
 
   setUpLevel(20);
 
   levelEdit(1);
 
-  var fig1 = titleBar.innerHTML.split('SCORE: ');
+  var fig1 = domById('titleBar').innerHTML.split('SCORE: ');
   var fig2 = fig1[1].split('</center>');
 
   fig2[0] = 0;
-  var fig2 = fig2.join('');
+  fig2 = fig2.join('');
 
-  titleBar.innerHTML = fig1[0] + 'SCORE: ' + fig2;
+  domById('titleBar').innerHTML = fig1[0] + 'SCORE: ' + fig2;
 
-  var fig1 = titleBar.innerHTML.split('LIVES: ');
-  var fig2 = fig1[1].split('</center>');
+  fig1 = domById('titleBar').innerHTML.split('LIVES: ');
+  fig2 = fig1[1].split('</center>');
   fig2[0] = 1;
   var fig3 = fig2[0];
-  var fig2 = fig2.join('');
+  fig2 = fig2.join('');
 
-  titleBar.innerHTML = fig1[0] + 'LIVES: ' + fig2;
+  domById('titleBar').innerHTML = fig1[0] + 'LIVES: ' + fig2;
 
-  var fig1 = titleBar.innerHTML.split('PICK-UPS LEFT: ');
-  var fig2 = fig1[1].split('</center>');
+  fig1 = domById('titleBar').innerHTML.split('PICK-UPS LEFT: ');
+  fig2 = fig1[1].split('</center>');
   fig2[0] = 0;
-  var fig3 = fig2[0];
-  var fig2 = fig2.join('');
+  fig3 = fig2[0];
+  fig2 = fig2.join('');
 
-  titleBar.innerHTML = fig1[0] + 'PICK-UPS LEFT: ' + fig2;
+  domById('titleBar').innerHTML = fig1[0] + 'PICK-UPS LEFT: ' + fig2;
 
   thisLevel = 0;
   lives = 1;
@@ -874,9 +907,9 @@ function resetGame() {
   disableBlackPiece = false;
   endGameMsgCount = 0;
 
-  keys0.style.left = 18;
-  keys1.style.left = 263;
-  keys2.style.left = 508;
+  domById('keys0').style.left = 18;
+  domById('keys1').style.left = 263;
+  domById('keys2').style.left = 508;
 
   disabledFlags = {
     move: false,
@@ -889,16 +922,16 @@ function resetGame() {
     enemy6: false
   };
 
-  titleDisplayer.style.left = 0;
-  keys0.style.left = 18;
-  keys1.style.left = 263;
-  keys2.style.left = 508;
+  domById('titleDisplayer').style.left = 0;
+  domById('keys0').style.left = 18;
+  domById('keys1').style.left = 263;
+  domById('keys2').style.left = 508;
   domById('option1').src = 'keys0img.gif';
   domById('option2').src = 'keys1img.gif';
   domById('option3').src = 'keys2img.gif';
-  optionText.innerHTML = 'Select Your Keys';
-  optionText.style.left = 238;
-  startButton.style.left = 301;
+  domById('optionText').innerHTML = 'Select Your Keys';
+  domById('optionText').style.left = 238;
+  domById('startButton').style.left = 301;
 
   gameStarted = false;
   gameFinished = false;
@@ -908,9 +941,12 @@ function setPlayerImg() {
   playerImgCount = (playerImgCount === playerImgArray.length) ? 0 : playerImgCount;
 
   var adder = (domById('playerImg').src.indexOf('right') !== -1) ? 'right' : 'left';
-  domById('playerImg').src = 'Graphics/Player/player' + playerImgArray[playerImgCount] + adder + '.gif';
-  player.imageRef = 'Graphics/Player/player' + playerImgArray[playerImgCount] + adder + '.gif';
 
+  domById('playerImg').src = (
+    'Graphics/Player/player' + playerImgArray[playerImgCount] + adder + '.gif'
+  );
+
+  player.imageRef = 'Graphics/Player/player' + playerImgArray[playerImgCount] + adder + '.gif';
   playerImgCount++;
 
   setTimeout(setPlayerImg, 100);
@@ -918,12 +954,31 @@ function setPlayerImg() {
 
 var movingPieceMap = {};
 
-function movingPiece(objName, theLeft, theTop, XOffSet, YOffSet, speed, spanId, imageRef, imageId, moveEndCommand) {
-  var theLeft = parseFloat(theLeft);
-  var theTop = parseFloat(theTop);
-  var speed = parseFloat(speed);
+function movingPiece(
+  objName,
+  theLeft,
+  theTop,
+  XOffSet,
+  YOffSet,
+  speed,
+  spanId,
+  imageRef,
+  imageId,
+  moveEndCommand
+) {
+  theLeft = parseFloat(theLeft);
+  theTop = parseFloat(theTop);
+  speed = parseFloat(speed);
 
-  document.write('<span id=\'' + spanId + '\' style=\'position:absolute;left:' + (theLeft * 40 + XOffSet) + ';top:' + (theTop * 40 + 20 + YOffSet) + ';\'><img id=\'' + imageId + '\' src=\'' + imageRef + '\'></span>');
+  document.write(
+    '<span ' +
+    'id=\'' + spanId + '\' ' +
+    'style=\'position:absolute;' +
+    'left:' + (theLeft * 40 + XOffSet) +
+    ';top:' + (theTop * 40 + 20 + YOffSet) + ';\'>' +
+    '<img id=\'' + imageId + '\' src=\'' + imageRef + '\'>' +
+    '</span>'
+  );
 
   this.objName = objName;
   this.theLeft = theLeft;
@@ -1084,7 +1139,7 @@ var chasingTimeout = 0;
 
 function pickUpBigOrb() {
   clearTimeout(emptyChaseBarTimeout);
-  chaseBarFill.style.width = 300;
+  domById('chaseBarFill').style.width = 300;
   emptyChaseBar();
 
   clearTimeout(chasingTimeout);
@@ -1094,8 +1149,11 @@ function pickUpBigOrb() {
 var emptyChaseBarTimeout = 0;
 
 function emptyChaseBar() {
-  if (parseInt(chaseBarFill.style.width) !== 0) {
-    chaseBarFill.style.width = parseInt(chaseBarFill.style.width) - chaseDecreaseNum;
+  if (parseInt(domById('chaseBarFill').style.width) !== 0) {
+    domById('chaseBarFill').style.width = (
+      parseInt(domById('chaseBarFill').style.width) - chaseDecreaseNum
+    );
+
     emptyChaseBarTimeout = setTimeout(emptyChaseBar, 100);
   } else {
     chasingGhosts = false;
@@ -1159,15 +1217,15 @@ function testBlocked(theLeft, theTop) {
   if (checkInteger(theLeft) && checkInteger(theTop)) {
 
     var thisCellData = domById('cell_' + theTop + '_' + theLeft).innerHTML.split('/');
-    var thisCellData = thisCellData[thisCellData.length - 1].split('.');
-    var thisCellData = thisCellData[0];
+    thisCellData = thisCellData[thisCellData.length - 1].split('.');
+    thisCellData = thisCellData[0];
 
     if (thisCellData === 'smallDot' || thisCellData === 'bigDot' || thisCellData === 'blank') {
       return false;
-      alert(thisCellData + '|| False returned');
+      window.alert(thisCellData + '|| False returned');
     } else {
       return true;
-      alert(thisCellData + '|| True returned');
+      window.alert(thisCellData + '|| True returned');
     }
   } else {
     return true;
@@ -1175,20 +1233,20 @@ function testBlocked(theLeft, theTop) {
 }
 
 function replace(string, ridOf, replaceWith) {
-  var string = string.split(ridOf);
-  var string = string.join(replaceWith);
+  string = string.split(ridOf);
+  string = string.join(replaceWith);
 
   return string;
 }
 
 function levelEdit(num) {
-  var fig1 = titleBar.innerHTML.split('LEVEL: ');
+  var fig1 = domById('titleBar').innerHTML.split('LEVEL: ');
   var fig2 = fig1[1].split('</center>');
 
   fig2[0] = num;
   fig2 = fig2.join('');
 
-  titleBar.innerHTML = fig1[0] + 'LEVEL: ' + fig2;
+  domById('titleBar').innerHTML = fig1[0] + 'LEVEL: ' + fig2;
 }
 
 function scoreCredit(num) {
@@ -1200,23 +1258,23 @@ function scoreCredit(num) {
     lifeCredits += Math.floor(score / lifeCreditFrequency) - lifeCredits;
   }
 
-  var fig1 = titleBar.innerHTML.split('SCORE: ');
+  var fig1 = domById('titleBar').innerHTML.split('SCORE: ');
   var fig2 = fig1[1].split('</center>');
 
   fig2[0] = score * scoreMultiplier;
   var fig2 = fig2.join('');
 
-  titleBar.innerHTML = fig1[0] + 'SCORE: ' + fig2;
+  domById('titleBar').innerHTML = fig1[0] + 'SCORE: ' + fig2;
 }
 
 function editLife(num) {
-  var fig1 = titleBar.innerHTML.split('LIVES: ');
+  var fig1 = domById('titleBar').innerHTML.split('LIVES: ');
   var fig2 = fig1[1].split('</center>');
   fig2[0] = parseFloat(fig2[0]) + num;
   var fig3 = fig2[0];
   fig2 = fig2.join('');
 
-  titleBar.innerHTML = fig1[0] + 'LIVES: ' + fig2;
+  domById('titleBar').innerHTML = fig1[0] + 'LIVES: ' + fig2;
 
   if (fig3 === 0) {
     gameEndLose();
@@ -1224,13 +1282,13 @@ function editLife(num) {
 }
 
 function editPickUps(num) {
-  var fig1 = titleBar.innerHTML.split('PICK-UPS LEFT: ');
+  var fig1 = domById('titleBar').innerHTML.split('PICK-UPS LEFT: ');
   var fig2 = fig1[1].split('</center>');
   fig2[0] = parseFloat(fig2[0]) + num;
   var fig3 = fig2[0];
   var fig2 = fig2.join('');
 
-  titleBar.innerHTML = fig1[0] + 'PICK-UPS LEFT: ' + fig2;
+  domById('titleBar').innerHTML = fig1[0] + 'PICK-UPS LEFT: ' + fig2;
 
   if (fig3 === 0) {
     goNextLevel();
@@ -1241,11 +1299,11 @@ function goNextLevel() {
   thisLevel++;
 
   if (thisLevel === levels[thisLevelSet].length) {
-    alert();
+    window.alert();
     gameEndWin();
   } else {
     disabledFlags.move = true;
-    blackTrans.innerHTML = '<img src=\'coverPiece2.gif\'>';
+    domById('blackTrans').innerHTML = '<img src=\'coverPiece2.gif\'>';
     moveBlackPiece(function() { setUpLevel(thisLevel); });
   }
 }
@@ -1278,11 +1336,13 @@ function moveEnemy(enemyName) {
   var topDif = fixNegative(player.theTop - theTop);
   var topNum = (fixNegative(player.theTop - theTop) === player.theTop - theTop) ? 1 : -1;
 
+  var prior1, prior2, prior3, prior4;
+
   if (leftDif > topDif) {
-    var prior1 = function() { thisOb.moveLeft(leftNum); };
-    var prior2 = function() { thisOb.moveTop(topNum); };
-    var prior3 = function() { thisOb.moveTop(0 - topNum); };
-    var prior4 = function() { thisOb.moveLeft(0 - leftNum); };
+    prior1 = function() { thisOb.moveLeft(leftNum); };
+    prior2 = function() { thisOb.moveTop(topNum); };
+    prior3 = function() { thisOb.moveTop(0 - topNum); };
+    prior4 = function() { thisOb.moveLeft(0 - leftNum); };
 
     if (chasingGhosts) {
       if (!testBlocked(parseFloat(theLeft) - leftNum, theTop)) {
@@ -1306,10 +1366,10 @@ function moveEnemy(enemyName) {
       } else setTimeout(function() { moveEnemy(enemyName); }, 500);
     }
   } else {
-    var prior1 = function() { thisOb.moveTop(topNum); };
-    var prior2 = function() { thisOb.moveLeft(leftNum); };
-    var prior3 = function() { thisOb.moveLeft(0 - leftNum); };
-    var prior4 = function() { thisOb.moveTop(0 - topNum); };
+    prior1 = function() { thisOb.moveTop(topNum); };
+    prior2 = function() { thisOb.moveLeft(leftNum); };
+    prior3 = function() { thisOb.moveLeft(0 - leftNum); };
+    prior4 = function() { thisOb.moveTop(0 - topNum); };
 
     if (chasingGhosts) {
       if (!testBlocked(theLeft, parseFloat(theTop) - topNum)) prior4();
@@ -1347,18 +1407,14 @@ function changeEnemyImage(enemyName) {
   var thisOb = movingPieceMap[enemyName];
   var thisImg = thisOb.imageRef;
 
-  var thisEnemyNum = enemyName.charAt(enemyName.length - 1);
-
   if (thisImg.indexOf('Run') === -1) {
     if (thisImg.indexOf('Captured') === -1) {
-      var thisImg = thisImg.split(thisImg.charAt(20));
-      var thisImg = thisImg.join('Run');
+      thisImg = thisImg.split(thisImg.charAt(20));
+      thisImg = thisImg.join('Run');
     } else {
-      var thisImg = thisImg.split('Captured' + thisImg.charAt(thisImg.length - 1));
-
+      thisImg = thisImg.split('Captured' + thisImg.charAt(thisImg.length - 1));
       var adder = (Math.ceil(Math.random * 2) === 1) ? 'Left' : 'Right';
-
-      var thisImg = thisImg.join('Run' + adder);
+      thisImg = thisImg.join('Run' + adder);
     }
 
     thisOb.setImage(thisImg);
@@ -1374,7 +1430,7 @@ function fixEnemyName(theName) {
 }
 
 function fixNegative(num) {
-  var num = num + '';
+  num = num + '';
   num = replace(num, '-', '');
 
   return parseFloat(num);
@@ -1382,7 +1438,7 @@ function fixNegative(num) {
 
 function loseLife() {
   disabledFlags.move = true;
-  blackTrans.innerHTML = '<img src=\'coverPiece.gif\'>';
+  domById('blackTrans').innerHTML = '<img src=\'coverPiece.gif\'>';
   moveBlackPiece(loseLifeReal);
 }
 
@@ -1392,32 +1448,32 @@ function loseLifeReal() {
   player.setLeft(fig1[0]);
   player.setTop(fig1[1]);
 
-  var fig1 = levels[thisLevelSet][thisLevel][13][1];
+  fig1 = levels[thisLevelSet][thisLevel][13][1];
 
   enemy1.setLeft(fig1[0]);
   enemy1.setTop(fig1[1]);
 
-  var fig1 = levels[thisLevelSet][thisLevel][13][2];
+  fig1 = levels[thisLevelSet][thisLevel][13][2];
 
   enemy2.setLeft(fig1[0]);
   enemy2.setTop(fig1[1]);
 
-  var fig1 = levels[thisLevelSet][thisLevel][13][3];
+  fig1 = levels[thisLevelSet][thisLevel][13][3];
 
   enemy3.setLeft(fig1[0]);
   enemy3.setTop(fig1[1]);
 
-  var fig1 = levels[thisLevelSet][thisLevel][13][4];
+  fig1 = levels[thisLevelSet][thisLevel][13][4];
 
   enemy4.setLeft(fig1[0]);
   enemy4.setTop(fig1[1]);
 
-  var fig1 = levels[thisLevelSet][thisLevel][13][5];
+  fig1 = levels[thisLevelSet][thisLevel][13][5];
 
   enemy5.setLeft(fig1[0]);
   enemy5.setTop(fig1[1]);
 
-  var fig1 = levels[thisLevelSet][thisLevel][13][6];
+  fig1 = levels[thisLevelSet][thisLevel][13][6];
 
   enemy6.setLeft(fig1[0]);
   enemy6.setTop(fig1[1]);
@@ -1428,6 +1484,14 @@ function loseLifeReal() {
 }
 
 function ghostCollisionCheck() {
+  var playerSpan = domById('playerSpan');
+  var enemy1Span = domById('enemy1Span');
+  var enemy2Span = domById('enemy2Span');
+  var enemy3Span = domById('enemy3Span');
+  var enemy4Span = domById('enemy4Span');
+  var enemy5Span = domById('enemy5Span');
+  var enemy6Span = domById('enemy6Span');
+
   var px = parseInt(playerSpan.style.left);
   var py = parseInt(playerSpan.style.top);
 
@@ -1544,10 +1608,6 @@ function killEnemy(enemyName) {
   }
 }
 
-var monitorTimeout = 0;
-
-var collisionMonitorCount = 0;
-
 function monitorCollisions() {
   if (monitorRunning) ghostCollisionCheck();
   setTimeout(monitorCollisions, 100);
@@ -1556,6 +1616,7 @@ function monitorCollisions() {
 function moveBlackPiece(coverCommand) {
   if (!disableBlackPiece) {
     disabledFlags.move = true;
+    var blackTrans = domById('blackTrans');
     if (parseInt(blackTrans.style.left) === 0) coverCommand();
     blackTrans.style.left = parseInt(blackTrans.style.left) + 5;
     if (parseInt(blackTrans.style.left) < 760) setTimeout(function() { moveBlackPiece(coverCommand); }, 10);
@@ -1564,9 +1625,9 @@ function moveBlackPiece(coverCommand) {
       monitorRunning = true;
       disabledFlags.move = false;
 
-      if (parseInt(titleDisplayer.style.left) !== 0) {
+      if (parseInt(domById('titleDisplayer').style.left) !== 0) {
         gameStarted = true;
-        guard.style.left = -760;
+        domById('guard').style.left = -760;
         moveEnemy('enemy1');
         moveEnemy('enemy2');
         moveEnemy('enemy3');
