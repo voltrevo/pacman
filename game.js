@@ -893,12 +893,12 @@ function setPlayerImg() {
   setTimeout('setPlayerImg();', 100);
 }
 
-function movingPiece(objName, theLeft, theTop, XOffSet, YOffSet, speed, theId, imageRef, imageName, moveEndCommand) {
+function movingPiece(objName, theLeft, theTop, XOffSet, YOffSet, speed, spanId, imageRef, imageId, moveEndCommand) {
   var theLeft = eval(theLeft);
   var theTop = eval(theTop);
   var speed = eval(speed);
 
-  document.write('<span id=\'' + theId + '\' style=\'position:absolute;left:' + (theLeft * 40 + XOffSet) + ';top:' + (theTop * 40 + 20 + YOffSet) + ';\'><img src=\'' + imageRef + '\' name=\'' + imageName + '\'></span>');
+  document.write('<span id=\'' + spanId + '\' style=\'position:absolute;left:' + (theLeft * 40 + XOffSet) + ';top:' + (theTop * 40 + 20 + YOffSet) + ';\'><img id=\'' + imageId + '\' src=\'' + imageRef + '\'></span>');
 
   this.objName = objName;
   this.theLeft = theLeft;
@@ -906,9 +906,9 @@ function movingPiece(objName, theLeft, theTop, XOffSet, YOffSet, speed, theId, i
   this.XOffSet = XOffSet;
   this.YOffSet = YOffSet;
   this.speed = speed;
-  this.theId = theId;
+  this.spanId = spanId;
   this.imageRef = imageRef;
-  this.imageName = imageName;
+  this.imageId = imageId;
   this.moveEndCommand = moveEndCommand;
 
   this.setLeft = setLeft;
@@ -921,19 +921,19 @@ function movingPiece(objName, theLeft, theTop, XOffSet, YOffSet, speed, theId, i
 function setImage(imageRef) {
   this.imageRef = imageRef;
 
-  eval(this.imageName + '.src=\'' + imageRef + '\';');
+  eval(this.imageId + '.src=\'' + imageRef + '\';');
 }
 
 function setLeft(theLeft) {
   this.theLeft = theLeft;
 
-  eval(this.theId + '.style.left=' + (theLeft * 40 + this.XOffSet) + ';');
+  eval(this.spanId + '.style.left=' + (theLeft * 40 + this.XOffSet) + ';');
 }
 
 function setTop(theTop) {
   this.theTop = theTop;
 
-  eval(this.theId + '.style.top=' + (theTop * 40 + 20 + this.YOffSet) + ';');
+  eval(this.spanId + '.style.top=' + (theTop * 40 + 20 + this.YOffSet) + ';');
 }
 
 function moveLeft(theLeft) {
@@ -1023,7 +1023,7 @@ function playerMoveEnd() {
   }
 }
 
-var player = new movingPiece('player', -1, -1, 3, 3, 3, 'playerSpan', 'Graphics/Player/player1right.gif', 'playerImg', 'playerMoveEnd();');
+var player = new movingPiece('player', -1, -1, 3, 3, 3, 'playerImg', 'Graphics/Player/player1right.gif', 'playerMoveEnd();');
 
 function testOnOrb() {
   if (checkInteger(player.theLeft) && checkInteger(player.theTop)) {
