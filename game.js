@@ -52,7 +52,7 @@ function goToDefLogic() {
 }
 
 function setOption(num) {
-  if (optionCount == 0) {
+  if (optionCount === 0) {
     optionCount++;
     controlSelection = num;
     domById('option1').src = 'easyImg.gif';
@@ -62,7 +62,7 @@ function setOption(num) {
     optionText.style.left = 175;
     scoreNote.style.left = 0;
     scoreNote.style.top = 500;
-  } else if (optionCount == 1) {
+  } else if (optionCount === 1) {
     scoreNote.style.left = -760;
     optionText.style.left = -760;
     keys0.style.left = -760;
@@ -548,8 +548,8 @@ while (loop < 13) {
 function setUpLevel(levelNum) {
   levelEdit(levelNum + 1);
   titleDisplayer.style.left = -760;
-  if (levelNum == 0) guard.style.left = -760;
-  if (levelNum == 20) guard.style.left = 0;
+  if (levelNum === 0) guard.style.left = -760;
+  if (levelNum === 20) guard.style.left = 0;
 
   var loop = 0;
   var pickUpNum = 0;
@@ -558,7 +558,7 @@ function setUpLevel(levelNum) {
     var loop2 = 0;
 
     while (loop2 < 19) {
-      if (levels[thisLevelSet][levelNum][loop][loop2] == '1' || levels[thisLevelSet][levelNum][loop][loop2] == '2') {
+      if (levels[thisLevelSet][levelNum][loop][loop2] === 1 || levels[thisLevelSet][levelNum][loop][loop2] === 2) {
         pickUpNum++;
       }
 
@@ -624,7 +624,7 @@ function setUpLevel(levelNum) {
   enemy6.setImage('Graphics/Enemy/enemy3left.gif');
 
   editPickUps(pickUpNum);
-  if (levelNum == 0) monitorRunning = true;
+  if (levelNum === 0) monitorRunning = true;
 }
 
 var gameStarted = false;
@@ -641,9 +641,9 @@ var rKeyDown = false;
 var eKeyDown = false;
 
 function keyDown() {
-  if (event.keyCode == 82) rKeyDown = true;
-  if (event.keyCode == 69) eKeyDown = true;
-  if (event.keyCode == 80) {
+  if (event.keyCode === 82) rKeyDown = true;
+  if (event.keyCode === 69) eKeyDown = true;
+  if (event.keyCode === 80) {
     if (!pauseDisabled) {
       alert('-- Pause --\n\nTip: ' + randomTip());
       leftKeyDown = false;
@@ -659,19 +659,19 @@ function keyDown() {
       }, 100);
     }
   }
-  if (event.keyCode == leftButtons[controlSelection]) {
+  if (event.keyCode === leftButtons[controlSelection]) {
     goLeft();
     leftKeyDown = true;
   }
-  if (event.keyCode == upButtons[controlSelection]) {
+  if (event.keyCode === upButtons[controlSelection]) {
     goUp();
     upKeyDown = true;
   }
-  if (event.keyCode == rightButtons[controlSelection]) {
+  if (event.keyCode === rightButtons[controlSelection]) {
     goRight();
     rightKeyDown = true;
   }
-  if (event.keyCode == downButtons[controlSelection]) {
+  if (event.keyCode === downButtons[controlSelection]) {
     goDown();
     downKeyDown = true;
   }
@@ -716,18 +716,18 @@ function randomTip() {
 }
 
 function keyUp() {
-  if (event.keyCode == 82) rKeyDown = false;
-  if (event.keyCode == 69) eKeyDown = false;
-  if (event.keyCode == leftButtons[controlSelection]) {
+  if (event.keyCode === 82) rKeyDown = false;
+  if (event.keyCode === 69) eKeyDown = false;
+  if (event.keyCode === leftButtons[controlSelection]) {
     leftKeyDown = false;
   }
-  if (event.keyCode == upButtons[controlSelection]) {
+  if (event.keyCode === upButtons[controlSelection]) {
     upKeyDown = false;
   }
-  if (event.keyCode == rightButtons[controlSelection]) {
+  if (event.keyCode === rightButtons[controlSelection]) {
     rightKeyDown = false;
   }
-  if (event.keyCode == downButtons[controlSelection]) {
+  if (event.keyCode === downButtons[controlSelection]) {
     downKeyDown = false;
   }
 }
@@ -735,11 +735,11 @@ function keyUp() {
 function checkInteger(num) {
   var num = parseFloat(num);
 
-  return (num != (Math.round(num))) ? false : true;
+  return (num !== (Math.round(num))) ? false : true;
 }
 
 function goUp() {
-  if (gameStarted == true && gameFinished == false) {
+  if (gameStarted === true && gameFinished === false) {
     if (checkInteger(player.theLeft)) {
       if (!testBlocked(player.theLeft, parseFloat(player.theTop) - 1)) {
         playerNum = -1;
@@ -751,7 +751,7 @@ function goUp() {
 }
 
 function goDown() {
-  if (gameStarted == true && gameFinished == false) {
+  if (gameStarted === true && gameFinished === false) {
     if (checkInteger(player.theLeft)) {
       if (!testBlocked(player.theLeft, parseFloat(player.theTop) + 1)) {
         playerNum = 1;
@@ -763,7 +763,7 @@ function goDown() {
 }
 
 function goLeft() {
-  if (gameStarted == true && gameFinished == false) {
+  if (gameStarted === true && gameFinished === false) {
     var playerNum = player.imageRef.charAt(22);
 
     player.setImage('Graphics/Player/Player' + playerNum + 'left.gif');
@@ -779,7 +779,7 @@ function goLeft() {
 }
 
 function goRight() {
-  if (gameStarted == true && gameFinished == false) {
+  if (gameStarted === true && gameFinished === false) {
     var playerNum = player.imageRef.charAt(22);
 
     player.setImage('Graphics/Player/Player' + playerNum + 'right.gif');
@@ -807,7 +807,7 @@ var creditTimeout = 0;
 clearTimeout(creditTimeout);
 
 function displayCredits() {
-  endGameMsgCount = (endGameMsgCount == endGameMsgs.length) ? 0 : endGameMsgCount;
+  endGameMsgCount = (endGameMsgCount === endGameMsgs.length) ? 0 : endGameMsgCount;
   creditSpan.style.left = 0;
   creditSpan.innerHTML = endGameMsgs[endGameMsgCount];
   endGameMsgCount++;
@@ -905,9 +905,9 @@ function resetGame() {
 }
 
 function setPlayerImg() {
-  playerImgCount = (playerImgCount == playerImgArray.length) ? 0 : playerImgCount;
+  playerImgCount = (playerImgCount === playerImgArray.length) ? 0 : playerImgCount;
 
-  var adder = (domById('playerImg').src.indexOf('right') != -1) ? 'right' : 'left';
+  var adder = (domById('playerImg').src.indexOf('right') !== -1) ? 'right' : 'left';
   domById('playerImg').src = 'Graphics/Player/player' + playerImgArray[playerImgCount] + adder + '.gif';
   player.imageRef = 'Graphics/Player/player' + playerImgArray[playerImgCount] + adder + '.gif';
 
@@ -1065,8 +1065,8 @@ function testOnOrb() {
   if (checkInteger(player.theLeft) && checkInteger(player.theTop)) {
     var cell = domById('cell_' + player.theTop + '_' + player.theLeft);
 
-    if (cell.innerHTML.indexOf('Dot.gif') != -1) {
-      if (cell.innerHTML.indexOf('bigDot.gif') != -1) {
+    if (cell.innerHTML.indexOf('Dot.gif') !== -1) {
+      if (cell.innerHTML.indexOf('bigDot.gif') !== -1) {
         pickUpBigOrb();
       }
 
@@ -1094,7 +1094,7 @@ function pickUpBigOrb() {
 var emptyChaseBarTimeout = 0;
 
 function emptyChaseBar() {
-  if (parseInt(chaseBarFill.style.width) != 0) {
+  if (parseInt(chaseBarFill.style.width) !== 0) {
     chaseBarFill.style.width = parseInt(chaseBarFill.style.width) - chaseDecreaseNum;
     emptyChaseBarTimeout = setTimeout(emptyChaseBar, 100);
   } else {
@@ -1147,12 +1147,12 @@ function changeGhostImages() {
     }, 500);
   }
 
-  if (enemy1.imageRef.indexOf('Captured') == -1) enemy1.setImage('Graphics/Enemy/enemy1left.gif');
-  if (enemy2.imageRef.indexOf('Captured') == -1) enemy2.setImage('Graphics/Enemy/enemy2right.gif');
-  if (enemy3.imageRef.indexOf('Captured') == -1) enemy3.setImage('Graphics/Enemy/enemy3left.gif');
-  if (enemy4.imageRef.indexOf('Captured') == -1) enemy4.setImage('Graphics/Enemy/enemy1right.gif');
-  if (enemy5.imageRef.indexOf('Captured') == -1) enemy5.setImage('Graphics/Enemy/enemy2left.gif');
-  if (enemy6.imageRef.indexOf('Captured') == -1) enemy6.setImage('Graphics/Enemy/enemy3right.gif');
+  if (enemy1.imageRef.indexOf('Captured') === -1) enemy1.setImage('Graphics/Enemy/enemy1left.gif');
+  if (enemy2.imageRef.indexOf('Captured') === -1) enemy2.setImage('Graphics/Enemy/enemy2right.gif');
+  if (enemy3.imageRef.indexOf('Captured') === -1) enemy3.setImage('Graphics/Enemy/enemy3left.gif');
+  if (enemy4.imageRef.indexOf('Captured') === -1) enemy4.setImage('Graphics/Enemy/enemy1right.gif');
+  if (enemy5.imageRef.indexOf('Captured') === -1) enemy5.setImage('Graphics/Enemy/enemy2left.gif');
+  if (enemy6.imageRef.indexOf('Captured') === -1) enemy6.setImage('Graphics/Enemy/enemy3right.gif');
 }
 
 function testBlocked(theLeft, theTop) {
@@ -1162,7 +1162,7 @@ function testBlocked(theLeft, theTop) {
     var thisCellData = thisCellData[thisCellData.length - 1].split('.');
     var thisCellData = thisCellData[0];
 
-    if (thisCellData == 'smallDot' || thisCellData == 'bigDot' || thisCellData == 'blank') {
+    if (thisCellData === 'smallDot' || thisCellData === 'bigDot' || thisCellData === 'blank') {
       return false;
       alert(thisCellData + '|| False returned');
     } else {
@@ -1218,7 +1218,7 @@ function editLife(num) {
 
   titleBar.innerHTML = fig1[0] + 'LIVES: ' + fig2;
 
-  if (fig3 == 0) {
+  if (fig3 === 0) {
     gameEndLose();
   }
 }
@@ -1232,7 +1232,7 @@ function editPickUps(num) {
 
   titleBar.innerHTML = fig1[0] + 'PICK-UPS LEFT: ' + fig2;
 
-  if (fig3 == 0) {
+  if (fig3 === 0) {
     goNextLevel();
   }
 }
@@ -1240,7 +1240,7 @@ function editPickUps(num) {
 function goNextLevel() {
   thisLevel++;
 
-  if (thisLevel == levels[thisLevelSet].length) {
+  if (thisLevel === levels[thisLevelSet].length) {
     alert();
     gameEndWin();
   } else {
@@ -1268,15 +1268,15 @@ function moveEnemy(enemyName) {
   var predictFig = fixNegative(player.theLeft - theLeft) + fixNegative(player.theTop - theTop);
   var multiplier = (predictFig > 6) ? 6 : predictFig;
 
-  if (playerTopLeft != null) {
+  if (playerTopLeft !== null) {
     if (playerTopLeft) playerLeft = playerLeft + (playerNum * multiplier);
     if (!playerTopLeft) playerTop = playerTop + (playerNum * multiplier);
   }
 
   var leftDif = fixNegative(player.theLeft - theLeft);
-  var leftNum = (fixNegative(player.theLeft - theLeft) == player.theLeft - theLeft) ? 1 : -1;
+  var leftNum = (fixNegative(player.theLeft - theLeft) === player.theLeft - theLeft) ? 1 : -1;
   var topDif = fixNegative(player.theTop - theTop);
-  var topNum = (fixNegative(player.theTop - theTop) == player.theTop - theTop) ? 1 : -1;
+  var topNum = (fixNegative(player.theTop - theTop) === player.theTop - theTop) ? 1 : -1;
 
   if (leftDif > topDif) {
     var prior1 = function() { thisOb.moveLeft(leftNum); };
@@ -1338,7 +1338,7 @@ function moveEnemy(enemyName) {
 }
 
 function turnEnemy(enemyName, leftNum) {
-  var direction = (leftNum == 1) ? 'right' : 'left';
+  var direction = (leftNum === 1) ? 'right' : 'left';
   var enemy = movingPieceMap[enemyName];
   enemy.setImage(fixEnemyName(enemyName) + direction + '.gif');
 }
@@ -1349,14 +1349,14 @@ function changeEnemyImage(enemyName) {
 
   var thisEnemyNum = enemyName.charAt(enemyName.length - 1);
 
-  if (thisImg.indexOf('Run') == -1) {
-    if (thisImg.indexOf('Captured') == -1) {
+  if (thisImg.indexOf('Run') === -1) {
+    if (thisImg.indexOf('Captured') === -1) {
       var thisImg = thisImg.split(thisImg.charAt(20));
       var thisImg = thisImg.join('Run');
     } else {
       var thisImg = thisImg.split('Captured' + thisImg.charAt(thisImg.length - 1));
 
-      var adder = (Math.ceil(Math.random * 2) == 1) ? 'Left' : 'Right';
+      var adder = (Math.ceil(Math.random * 2) === 1) ? 'Left' : 'Right';
 
       var thisImg = thisImg.join('Run' + adder);
     }
@@ -1422,7 +1422,7 @@ function loseLifeReal() {
   enemy6.setLeft(fig1[0]);
   enemy6.setTop(fig1[1]);
 
-  if (lives != 1) pickUpBigOrb();
+  if (lives !== 1) pickUpBigOrb();
 
   editLife(-1);
 }
@@ -1540,7 +1540,7 @@ function killEnemy(enemyName) {
     }, 750);
 
     killGhostCount = killGhostCount * 2;
-    killGhostCount = (killGhostCount == 6400) ? 3200 : killGhostCount;
+    killGhostCount = (killGhostCount === 6400) ? 3200 : killGhostCount;
   }
 }
 
@@ -1556,7 +1556,7 @@ function monitorCollisions() {
 function moveBlackPiece(coverCommand) {
   if (!disableBlackPiece) {
     disabledFlags.move = true;
-    if (parseInt(blackTrans.style.left) == 0) coverCommand();
+    if (parseInt(blackTrans.style.left) === 0) coverCommand();
     blackTrans.style.left = parseInt(blackTrans.style.left) + 5;
     if (parseInt(blackTrans.style.left) < 760) setTimeout(function() { moveBlackPiece(coverCommand); }, 10);
     else {
@@ -1564,7 +1564,7 @@ function moveBlackPiece(coverCommand) {
       monitorRunning = true;
       disabledFlags.move = false;
 
-      if (parseInt(titleDisplayer.style.left) != 0) {
+      if (parseInt(titleDisplayer.style.left) !== 0) {
         gameStarted = true;
         guard.style.left = -760;
         moveEnemy('enemy1');
