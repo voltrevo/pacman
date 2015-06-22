@@ -1023,7 +1023,7 @@ function playerMoveEnd() {
   }
 }
 
-var player = new movingPiece('player', -1, -1, 3, 3, 3, 'playerImg', 'Graphics/Player/player1right.gif', 'playerMoveEnd();');
+var player = new movingPiece('player', -1, -1, 3, 3, 3, 'playerSpan', 'Graphics/Player/player1right.gif', 'playerImg', 'playerMoveEnd();');
 
 function testOnOrb() {
   if (checkInteger(player.theLeft) && checkInteger(player.theTop)) {
